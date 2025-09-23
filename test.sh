@@ -16,7 +16,7 @@ curl --silent -X GET http://localhost:8080/api/me -H "Authorization: Bearer ${to
 
 # Create a new task
 echo "Create a new task"
-curl --silent -X POST http://localhost:8081/api/tasks -H "Content-Type: application/json" -H "Authorization: Bearer ${token}" -d '{"title":"New User Task","description":"This is a task for the new user"}'  | jq .
+task_id="$(curl --silent -X POST http://localhost:8081/api/tasks -H "Content-Type: application/json" -H "Authorization: Bearer ${token}" -d '{"title":"New User Task","description":"This is a task for the new user"}'  | jq -r .id)"
 
 # List all tasks
 echo "List all tasks"
@@ -24,7 +24,7 @@ curl --silent -X GET http://localhost:8081/api/tasks -H "Authorization: Bearer $
 
 # Update a task
 echo "Update a task"
-curl --silent -X PUT http://localhost:8081/api/tasks/96c903fa-9305-4d48-b868-e9e83accb9eb -H "Content-Type: application/json" -H "Authorization: Bearer ${token}" -d '{"title":"Updated Task Title","description":"This is an updated task description","completed":true}'  | jq .
+task_id="$(curl --silent -X PUT http://localhost:8081/api/tasks/96c903fa-9305-4d48-b868-e9e83accb9eb -H "Content-Type: application/json" -H "Authorization: Bearer ${token}" -d '{"title":"Updated Task Title","description":"This is an updated task description","completed":true}'  | jq .id)"
 
 # List all tasks
 echo "List all tasks"
@@ -40,7 +40,7 @@ curl --silent -X GET http://localhost:8081/api/tasks -H "Authorization: Bearer $
 
 # Create another task
 echo "Create another task"
-curl --silent -X POST http://localhost:8081/api/tasks -H "Content-Type: application/json" -H "Authorization: Bearer ${token}" -d '{"title":"Another Task","description":"This is another task after deleting the previous one"}'  | jq .
+task_id="$(curl --silent -X POST http://localhost:8081/api/tasks -H "Content-Type: application/json" -H "Authorization: Bearer ${token}" -d '{"title":"Another Task","description":"This is another task after deleting the previous one"}'  | jq .id)"
 
 # List all tasks
 echo "List all tasks"
