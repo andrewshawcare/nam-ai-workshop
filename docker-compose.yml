@@ -42,7 +42,7 @@ services:
   # Identity Service
   identity-service:
     build:
-      context: ./identity-service
+      context: ./microservices/identity-service
       dockerfile: Dockerfile
     container_name: identity-service
     depends_on:
@@ -69,7 +69,7 @@ services:
   # Task Service
   task-service:
     build:
-      context: ./task-service
+      context: ./microservices/task-service
       dockerfile: Dockerfile
     container_name: task-service
     depends_on:
