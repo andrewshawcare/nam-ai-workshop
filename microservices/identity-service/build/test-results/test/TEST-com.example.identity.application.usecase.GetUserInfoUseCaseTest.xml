@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.identity.application.usecase.GetUserInfoUseCaseTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2025-09-23T15:19:42" hostname="0ab23c440a42" time="1.142">
+  <properties/>
+  <testcase name="shouldGetUserInfoSuccessfully()" classname="com.example.identity.application.usecase.GetUserInfoUseCaseTest" time="1.136"/>
+  <testcase name="shouldThrowExceptionWhenUserNotFound()" classname="com.example.identity.application.usecase.GetUserInfoUseCaseTest" time="0.002"/>
+  <testcase name="shouldThrowExceptionWhenUserIdIsNull()" classname="com.example.identity.application.usecase.GetUserInfoUseCaseTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

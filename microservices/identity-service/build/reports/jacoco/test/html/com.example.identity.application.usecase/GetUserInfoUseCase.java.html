@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GetUserInfoUseCase.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">identity-service</a> &gt; <a href="index.source.html" class="el_package">com.example.identity.application.usecase</a> &gt; <span class="el_source">GetUserInfoUseCase.java</span></div><h1>GetUserInfoUseCase.java</h1><pre class="source lang-java linenums">package com.example.identity.application.usecase;
+
+import com.example.identity.domain.model.User;
+import com.example.identity.port.input.GetUserInfoPort;
+import com.example.identity.port.output.UserRepositoryPort;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
+
+/**
+ * Use case for retrieving user information.
+ */
+@Service
+public class GetUserInfoUseCase implements GetUserInfoPort {
+    
+    private final UserRepositoryPort userRepository;
+    
+<span class="fc" id="L20">    public GetUserInfoUseCase(UserRepositoryPort userRepository) {</span>
+<span class="fc" id="L21">        this.userRepository = userRepository;</span>
+<span class="fc" id="L22">    }</span>
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public User getUserInfo(String userId) throws UserNotFoundException {
+        try {
+<span class="fc" id="L31">            UUID id = UUID.fromString(userId);</span>
+<span class="fc" id="L32">            return userRepository.findById(id)</span>
+<span class="fc" id="L33">                .orElseThrow(() -&gt; new UserNotFoundException(&quot;User not found with id: &quot; + userId));</span>
+<span class="nc" id="L34">        } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L35">            throw new UserNotFoundException(&quot;Invalid user ID format: &quot; + userId);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

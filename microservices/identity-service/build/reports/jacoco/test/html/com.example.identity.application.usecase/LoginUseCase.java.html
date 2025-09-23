@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LoginUseCase.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">identity-service</a> &gt; <a href="index.source.html" class="el_package">com.example.identity.application.usecase</a> &gt; <span class="el_source">LoginUseCase.java</span></div><h1>LoginUseCase.java</h1><pre class="source lang-java linenums">package com.example.identity.application.usecase;
+
+import com.example.identity.domain.model.Email;
+import com.example.identity.domain.model.Password;
+import com.example.identity.domain.model.User;
+import com.example.identity.domain.service.UserDomainService;
+import com.example.identity.port.input.LoginPort;
+import com.example.identity.port.output.TokenGenerationPort;
+import com.example.identity.port.output.UserRepositoryPort;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * Use case for user authentication.
+ */
+@Service
+public class LoginUseCase implements LoginPort {
+    
+    private final UserDomainService userDomainService;
+    private final UserRepositoryPort userRepository;
+    private final TokenGenerationPort tokenGenerator;
+    
+    public LoginUseCase(
+        UserDomainService userDomainService,
+        UserRepositoryPort userRepository,
+        TokenGenerationPort tokenGenerator
+<span class="fc" id="L28">    ) {</span>
+<span class="fc" id="L29">        this.userDomainService = userDomainService;</span>
+<span class="fc" id="L30">        this.userRepository = userRepository;</span>
+<span class="fc" id="L31">        this.tokenGenerator = tokenGenerator;</span>
+<span class="fc" id="L32">    }</span>
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public String login(String emailStr, String passwordStr) throws AuthenticationFailedException {
+        // Create email value object
+<span class="fc" id="L41">        Email email = Email.of(emailStr);</span>
+        
+        // Find user by email
+<span class="fc" id="L44">        User user = userRepository.findByEmail(email)</span>
+<span class="fc" id="L45">            .orElseThrow(() -&gt; new AuthenticationFailedException(&quot;Invalid credentials&quot;));</span>
+        
+        // Create password value object
+<span class="fc" id="L48">        Password password = Password.of(passwordStr);</span>
+        
+        // Authenticate user
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        if (!userDomainService.authenticateUser(user, password)) {</span>
+<span class="fc" id="L52">            throw new AuthenticationFailedException(&quot;Invalid credentials&quot;);</span>
+        }
+        
+        // Generate JWT token
+<span class="fc" id="L56">        return tokenGenerator.generateToken(user.getId().toString());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
